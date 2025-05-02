@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Logs Button -->
+    <button id="logsButton" class="btn btn-info" title="View Logs">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+        </svg>
+    </button>
+    
+    <!-- Logs Modal -->
+    <div id="logsModal" class="logs-modal">
+        <div class="logs-modal-content">
+            <span class="logs-close">&times;</span>
+            <h2>Application Logs</h2>
+            <div id="logsContent"></div>
+        </div>
+    </div>
+    
+    <!-- Info Dialog -->
+    <div id="infoDialog" class="info-dialog">
+        <div class="info-dialog-content">
+            <div class="info-dialog-header">
+                <h2 id="infoDialogTitle">Information</h2>
+                <span class="info-dialog-close">&times;</span>
+            </div>
+            <div id="infoDialogMessage" class="info-dialog-message"></div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Documentation Chat</h1>
+        
+        <h2>1 - 🏃‍♀️ Fetch Documentation</h2>
+        <div class="mb-4">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="docUrl" placeholder="Enter documentation URL…">
+            </div>
+            <div class="input-group mb-3">
+                <select id="siteReaperSelectorForFetching" class="form-select" style="width: 80%;">
+                    <option selected value="0">Choose a site reaper…</option>
+                </select>
+                <button id="siteReaperInfoBtn" class="btn btn-info ms-2">Information</button>            </div>
+            <button id="fetchBtn" class="btn btn-primary">Fetch Documentation</button>
+            <span id="fetchStatus" class="ms-3"></span>
+        </div>
+
+        <h2>2 - 🔍 Display scanned URLs</h2>
+        <div class="mb-3">
+            <select id="scanSelectorForDisplay" class="form-select">
+                <option selected value="0">Choose a scan…</option>
+            </select>
+            <select id="scannedUrlSelectorForDisplay" class="form-select">
+                <option selected value="0">Choose a URL…</option>
+            </select>
+            <textarea id="scannedUrlDisplay" class="form-control mt-3" rows="10" readonly></textarea>
+            <button id="displayScannedUrlBtn" class="btn btn-primary mt-3">Display scanned URL</button>
+        </div>
+
+        <h2>3 - 🏃‍♀️ Chunk Documentation</h2>
+        <div class="mb-3">
+            <select id="scanSelectorForChunk" class="form-select">
+                <option selected value="0">Choose a scan…</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <button id="chunkBtn" class="btn btn-primary">Chunk Documentation</button>
+            <span id="chunkStatus" class="ms-3"></span>
+        </div>
+
+        <h2>4 - 🔍 View Chunks</h2>
+        <div class="mb-3">
+            <select id="scanSelectorForViewChunk" class="form-select mb-2">
+                <option selected value="0">Choose a scan…</option>
+            </select>
+            <select id="chunkSetSelectorForViewChunk" class="form-select mb-2">
+                <option selected value="0">Choose a chunk set…</option>
+            </select>
+            <select id="scannedUrlSelectorForViewChunk" class="form-select mb-2">
+                <option selected value="0">Choose a URL…</option>
+            </select>
+            <select id="chunkSelectorForViewChunk" class="form-select mb-2">
+                <option selected value="0">Choose a chunk…</option>
+            </select>
+            <textarea id="chunkDisplay" class="form-control mt-3" rows="10" readonly></textarea>
+        </div>
+
+        <h2>5 - 🏃‍♀️ Embed Documentation</h2>
+        <div class="mb-3">
+            <select id="scanSelectorForEmbedding" class="form-select">
+                <option selected value="0">Choose a scan…</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <select id="chunkSetSelectorForEmbedding" class="form-select">
+                <option selected value="0">Choose a chunk set…</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <div class="input-group">
+                <select id="embeddingModelSelectorForEmbedding" class="form-select" style="width: 80%;">
+                    <option selected value="0">Choose an embedding model…</option>
+                </select>
+                <button id="embeddingModelInfoBtn" class="btn btn-info ms-2">Information</button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button id="embedBtn" class="btn btn-primary">Embed Documentation</button>
+            <span id="embedStatus" class="ms-3"></span>
+        </div>
+
+        <h2>6 - 🔍 View Embedings</h2>
+        <div class="mb-3">
+            <select id="scanSelectorForViewEmbeddings" class="form-select mb-2">
+                <option selected value="0">Choose a scan…</option>
+            </select>
+            <select id="chunkSetSelectorForViewEmbeddings" class="form-select mb-2">
+                <option selected value="0">Choose a chunk set…</option>
+            </select>
+            <select id="embeddingSetSelectorForViewEmbeddings" class="form-select mb-2">
+                <option selected value="0">Choose an embedding set…</option>
+            </select>
+            <textarea id="viewEmbeddings" class="form-control mt-3" rows="10" readonly></textarea>
+        </div>
+
+        <h2>7 - 🏃‍♀️ Ask a question</h2>
+        <div class="mb-3">
+            <select id="scanSelectorForQuestionAnswering" class="form-select mb-2">
+                <option selected value="0">Choose a scan…</option>
+            </select>
+            <select id="chunkSetSelectorForQuestionAnswering" class="form-select mb-2">
+                <option selected value="0">Choose a chunk set…</option>
+            </select>
+            <select id="embeddingSetForSelectorForQuestionAnswering" class="form-select mb-2">
+                <option selected value="0">Choose an embedding set…</option>
+            </select>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="question" placeholder="Enter your question…">
+        </div>
+        <button id="submitBtn" class="btn btn-success mb-4">Ask Question</button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading…</span>
+            </div>
+        </div>
+
+        <div id="response" class="mt-4"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
