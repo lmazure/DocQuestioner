@@ -17,8 +17,8 @@ A RAG application that allows users to ask questions about documentation using n
 
 1. Create a virtual environment and activate it:
     ```bash
-    python -m venv venv
-    source venv/bin/activate
+    python -m venv .venv
+    source .venv/Scripts/activate
     ```
 
 2. Install dependencies:
